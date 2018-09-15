@@ -14,16 +14,12 @@ export default class GameController {
   @Post('/games')
   @HttpCode(201)
   createGame(
-    @Body() body: Partial<Game>
+    @Body() body: string
   ) {
 
-    const { name } = body
+    const name = body['name']
 
-    const enumValues: number[] = Object.keys(Color)
-      .map(n => Number.parseInt(n))
-      .filter(n => !Number.isNaN(n))
-
-    const color: string = Object.values(Color)[(Math.floor(Math.random() * enumValues.length))]
+    const color: Color = Object.values(Color)[(Math.floor(Math.random() * Object.keys(Color).length))]
 
     const board:JSON = JSON.parse(JSON.stringify(defaultBoard))
 
@@ -42,9 +38,14 @@ export default class GameController {
     const game= await Game.findOne(id)
     if (!game) throw new NotFoundError('Cannot find game')
 
+    // const {board, color} = body
     const {board} = body
     if(board && moves(game['board'], board) > 1) throw new BadRequestError('You can make one move at time')
 
+    //IsEnum() Validator is not working with Partial?
+    // if(color && !(color in Color)) throw new BadRequestError(`The color: ${color} is not valid`)
+
     return Game.merge(game, body).save()
   }
+
 }

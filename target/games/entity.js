@@ -14,16 +14,19 @@ const BaseEntity_1 = require("typeorm/repository/BaseEntity");
 const class_validator_1 = require("class-validator");
 var Color;
 (function (Color) {
-    Color["Red"] = "red";
-    Color["Blue"] = "blue";
-    Color["Green"] = "green";
-    Color["Yellow"] = "yellow";
-    Color["Magenta"] = "magenta";
+    Color[Color["red"] = 0] = "red";
+    Color[Color["blue"] = 1] = "blue";
+    Color[Color["green"] = 2] = "green";
+    Color[Color["yellow"] = 3] = "yellow";
+    Color[Color["magenta"] = 4] = "magenta";
 })(Color = exports.Color || (exports.Color = {}));
-exports.moves = (board1, board2) => board1
-    .map((row, y) => row.filter((cell, x) => board2[y][x] !== cell))
-    .reduce((a, b) => a.concat(b))
-    .length;
+exports.moves = (board1, board2) => {
+    const lungh = board1
+        .map((row, y) => row.filter((cell, x) => board2[y][x] !== cell))
+        .reduce((a, b) => a.concat(b))
+        .length;
+    return lungh;
+};
 exports.defaultBoard = [
     ['o', 'o', 'o'],
     ['o', 'o', 'o'],
@@ -37,10 +40,12 @@ __decorate([
 ], Game.prototype, "id", void 0);
 __decorate([
     typeorm_1.Column('text', { nullable: false }),
+    class_validator_1.MinLength(3),
     __metadata("design:type", String)
 ], Game.prototype, "name", void 0);
 __decorate([
     class_validator_1.IsEnum(Color),
+    class_validator_1.MinLength(3),
     typeorm_1.Column('text', { nullable: false }),
     __metadata("design:type", String)
 ], Game.prototype, "color", void 0);

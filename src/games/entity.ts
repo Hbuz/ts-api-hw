@@ -3,6 +3,14 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity'
 import { IsEnum } from 'class-validator'
 
 
+// export enum Color {
+//   red = 'red',
+//   blue = 'blue',
+//   green = 'green',
+//   yellow = 'yellow',
+//   magenta = 'magenta'
+// }
+
 export enum Color {
   red,
   blue,
@@ -37,9 +45,9 @@ export class Game extends BaseEntity {
   @Column('text', { nullable: false })
   name: string
 
-  @IsEnum(Color)
-  @Column('text', { nullable: false })
-  color: string
+  @IsEnum(Color)  //NOT WORKING?
+  @Column('enum', { nullable: false, enum: Color })
+  color: Color
 
   @Column('json', { nullable: false })
   board: JSON
