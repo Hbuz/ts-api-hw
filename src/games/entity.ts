@@ -13,13 +13,10 @@ export enum Color {
 
 
 export const moves = (board1, board2) =>{
-// console.log("BOARD 1: "+board1)
-// console.log("BOARD 2: "+board2)
   const lungh = board1
     .map((row, y) => row.filter((cell, x) => board2[y][x] !== cell))
     .reduce((a, b) => a.concat(b))
     .length
-    console.log("MOVES: "+lungh)
     return lungh
 }
 
