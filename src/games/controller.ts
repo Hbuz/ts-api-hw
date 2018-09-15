@@ -39,15 +39,16 @@ export default class GameController {
   @Put('/games/:id')
   async updateGame(
     @Param('id') id: number,
-    @Body() newValue: Partial<Game>
+    @Body() body: Partial<Game>
   ) {
-    const {board} = newValue
     
     const game= await Game.findOne(id)
+    // const {board, ..._} = game
     if (!game) throw new NotFoundError('Cannot find game')
 
+    const {board} = body
     if(board && moves(game['board'], board) > 1) throw new BadRequestError('You can make one move at time')
 
-    return Game.merge(game, newValue).save()
+    return Game.merge(game, body).save()
   }
 }
