@@ -13,11 +13,11 @@ export default class GameController {
   @Post('/games')
   @HttpCode(201)
   createGame(
-    @Body() body: string
+    @Body() body: Partial<Game>
   ) {
-    console.log("CHWDWD   "+JSON.stringify(body))
-    console.log("CHWDWD   "+body["name"])
-    // const { name, ..._ } = body
+
+    const { name } = body
+
     const enumColor: string[] = Object.values(Color)
 
     const enumValues: number[] = Object.keys(Color)
@@ -30,7 +30,7 @@ export default class GameController {
 
     const board:JSON = JSON.parse(JSON.stringify(defaultBoard))
 
-    const newGame: Game = Game.create({name:body["name"], color, board})
+    const newGame: Game = Game.create({name, color, board})
 
     return newGame.save()
   }
