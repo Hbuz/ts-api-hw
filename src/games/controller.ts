@@ -39,24 +39,19 @@ export default class GameController {
     const game = await Game.findOne(id)
     if (!game) throw new NotFoundError('Cannot find game')
 
-    //Other way for color validating
-    /* 
-    const {board, color} = body
-    if(color && !(color in Color)) throw new BadRequestError(`The color: ${color} is not valid`)
-    */
     const { name, board, color } = body
 
     if (board && moves(game['board'], board) > 1) throw new BadRequestError('You can make one move at time')
 
-    const newGame: Game = Game.create({ name, color, board })
+    const changedGame: Game = Game.create({ name, color, board })
     if (color) {
-      const checkColor: number = await validate(newGame).then(errors => { // errors is an array of validation errors
+      const checkColor: number = await validate(changedGame).then(errors => {
         return errors.length
       })
-      if (checkColor > 0) throw new BadRequestError('color must be a valid enum value')
+      if (checkColor > 0) throw new BadRequestError('Invalid color!!! Option available: red, yellow, blue, magenta, green')
     }
 
-    return Game.merge(game, newGame).save()
+    return Game.merge(game, changedGame).save()
   }
 
 }
