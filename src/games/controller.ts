@@ -1,5 +1,6 @@
 import { JsonController, Get, Param, Post, HttpCode, Body, Put, NotFoundError, BadRequestError } from 'routing-controllers'
 import { Game, Color } from './entity'
+import { validate } from 'class-validator';
 
 @JsonController()
 export default class GameController {
@@ -19,7 +20,7 @@ export default class GameController {
 
     const name: string = body['name']
 
-    const color: Color = Object.values(Color)[(Math.floor(Math.random() * Object.keys(Color).length))]
+    const color: string = Object.values(Color)[(Math.floor(Math.random() * Object.keys(Color).length))]
 
     const board: JSON = JSON.parse(JSON.stringify(defaultBoard))
 
@@ -43,11 +44,19 @@ export default class GameController {
     const {board, color} = body
     if(color && !(color in Color)) throw new BadRequestError(`The color: ${color} is not valid`)
     */
+    const { name, board, color } = body
 
-    const { board } = body
     if (board && moves(game['board'], board) > 1) throw new BadRequestError('You can make one move at time')
 
-    return Game.merge(game, body).save()
+    const newGame: Game = Game.create({ name, color, board })
+    if (color) {
+      const checkColor: number = await validate(newGame).then(errors => { // errors is an array of validation errors
+        return errors.length
+      })
+      if (checkColor > 0) throw new BadRequestError('color must be a valid enum value')
+    }
+
+    return Game.merge(game, newGame).save()
   }
 
 }

@@ -21,9 +21,9 @@ export class Game extends BaseEntity {
   @Column('text', { nullable: false })
   name: string
 
-  @IsEnum(Color)  //NOT WORKING WITH PARTIAL?
-  @Column('enum', { nullable: false })
-  color: Color
+  @IsEnum(Color)
+  @Column('text', { nullable: false })
+  color: string
 
   @Column('json', { nullable: false })
   board: JSON
