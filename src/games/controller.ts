@@ -10,6 +10,7 @@ export default class GameController {
     return { games }
   }
 
+  
   @Post('/games')
   @HttpCode(201)
   createGame(
@@ -18,15 +19,11 @@ export default class GameController {
 
     const { name } = body
 
-    const enumColor: string[] = Object.values(Color)
-
     const enumValues: number[] = Object.keys(Color)
       .map(n => Number.parseInt(n))
       .filter(n => !Number.isNaN(n))
 
-      const randomIndex: number = (Math.floor(Math.random() * enumValues.length))
-
-    const color: string = enumColor[randomIndex]
+    const color: string = Object.values(Color)[(Math.floor(Math.random() * enumValues.length))]
 
     const board:JSON = JSON.parse(JSON.stringify(defaultBoard))
 
@@ -43,7 +40,6 @@ export default class GameController {
   ) {
     
     const game= await Game.findOne(id)
-    // const {board, ..._} = game
     if (!game) throw new NotFoundError('Cannot find game')
 
     const {board} = body
