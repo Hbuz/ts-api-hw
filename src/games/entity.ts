@@ -4,11 +4,11 @@ import { IsEnum } from 'class-validator'
 
 
 export enum Color {
-  red,
-  blue,
-  green,
-  yellow,
-  magenta
+  red = 'red',
+  blue = 'blue',
+  green = 'green',
+  yellow = 'yellow',
+  magenta = 'magenta'
 }
 
 
@@ -21,8 +21,8 @@ export class Game extends BaseEntity {
   @Column('text', { nullable: false })
   name: string
 
-  @IsEnum(Color)  //NOT WORKING?
-  @Column('enum', { nullable: false, enum: Color })
+  @IsEnum(Color)  //NOT WORKING WITH PARTIAL?
+  @Column('enum', { nullable: false })
   color: Color
 
   @Column('json', { nullable: false })
