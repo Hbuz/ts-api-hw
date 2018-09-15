@@ -1,5 +1,5 @@
 import { JsonController, Get, Param, Post, HttpCode, Body, Put, NotFoundError, BadRequestError } from 'routing-controllers'
-import { Game, Color, moves, defaultBoard } from './entity'
+import { Game, Color } from './entity'
 
 @JsonController()
 export default class GameController {
@@ -42,10 +42,24 @@ export default class GameController {
     const {board} = body
     if(board && moves(game['board'], board) > 1) throw new BadRequestError('You can make one move at time')
 
-    //IsEnum() Validator is not working with Partial?
+    //Other way of validating color
     // if(color && !(color in Color)) throw new BadRequestError(`The color: ${color} is not valid`)
 
     return Game.merge(game, body).save()
   }
 
 }
+
+const moves = (board1, board2) =>{
+  const lungh = board1
+    .map((row, y) => row.filter((cell, x) => board2[y][x] !== cell))
+    .reduce((a, b) => a.concat(b))
+    .length
+    return lungh
+}
+
+const defaultBoard = [
+  ['o', 'o', 'o'],
+  ['o', 'o', 'o'],
+  ['o', 'o', 'o']
+]
