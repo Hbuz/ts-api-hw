@@ -1,19 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import { BaseEntity } from 'typeorm/repository/BaseEntity'
 import { IsEnum } from 'class-validator'
-
-
-export enum Color {
-  red = 'red',
-  blue = 'blue',
-  green = 'green',
-  yellow = 'yellow',
-  magenta = 'magenta'
-}
+import { Color } from '../lib/utils'
 
 
 @Entity()
-export class Game extends BaseEntity {
+export default class Game extends BaseEntity {
 
   @PrimaryGeneratedColumn()
   id?: number

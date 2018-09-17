@@ -1,6 +1,7 @@
-import { JsonController, Get, Param, Post, HttpCode, Body, Put, NotFoundError, BadRequestError } from 'routing-controllers'
-import { Game, Color } from './entity'
+import { JsonController, Get, Param, Post, HttpCode, Body, BodyParam, Put, NotFoundError, BadRequestError } from 'routing-controllers'
+import Game from './entity'
 import { validate } from 'class-validator';
+import { moves, defaultBoard, Color } from '../lib/utils'
 
 @JsonController()
 export default class GameController {
@@ -15,10 +16,8 @@ export default class GameController {
   @Post('/games')
   @HttpCode(201)
   createGame(
-    @Body() body: string
+    @BodyParam("name") name: string
   ) {
-
-    const name: string = body['name']
 
     const color: string = Object.values(Color)[(Math.floor(Math.random() * Object.keys(Color).length))]
 
@@ -55,17 +54,3 @@ export default class GameController {
   }
 
 }
-
-
-const moves = (board1, board2) =>
-  board1
-    .map((row, y) => row.filter((cell, x) => board2[y][x] !== cell))
-    .reduce((a, b) => a.concat(b))
-    .length
-
-
-const defaultBoard = [
-  ['o', 'o', 'o'],
-  ['o', 'o', 'o'],
-  ['o', 'o', 'o']
-]
