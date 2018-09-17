@@ -23,9 +23,7 @@ export default class GameController {
 
     const board: JSON = JSON.parse(JSON.stringify(defaultBoard))
 
-    const newGame: Game = Game.create({ name, color, board })
-
-    return newGame.save()
+    return Game.create({ name, color, board }).save()
   }
 
 
