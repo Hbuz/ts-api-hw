@@ -13,9 +13,8 @@ the default board is:
   ['o', 'o', 'o']
 ]
 
-### Functionalities:
+### Functionalities invoked by requests (examples with httpie):
 * Get all existing games ```@GET``` --> ```http :4000/games``` 
 * Create a new game ```@POST``` --> ```http post :4000/games name=ciao```
 * Make a move ```@PUT``` --> ```http put :4000/games/1 board:='[["x","o","o"],["o","o","o"],["o","o","o"]]'```
-(requests made with httpie)
 
